@@ -15,11 +15,53 @@
     </properties>
 
     <dependencies>
+        <!-- The Networking Library -->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>4.1.118.Final</version>
         </dependency>
+        <!-- Fixes the SSL Certificate error we saw earlier -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>1.78.1</version>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>ChatServer</id>
+            <properties>
+                <mainClass>com.nano.ChatServer</mainClass>
+                <port>8080</port>
+            </properties>
+        </profile>
+        <profile>
+            <id>SecureChatServer</id>
+            <properties>
+                <mainClass>com.nano.SecureChatServer</mainClass>
+                <port>8080</port>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <mainClass>${mainClass}</mainClass>
+                    <arguments>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <argument>${port}</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
